@@ -1,0 +1,106 @@
+version: '3.8'
+services:
+  redis-ui:
+    container_name: redis-ui
+    image: redislabs/redisinsight:1.6.2
+    networks:
+      redis_cluster:
+        ipv4_address: 10.0.0.2
+    ports:
+      - "8001:8001"
+  redis-n1:
+    build:
+      context: .
+    image: rediscluster:0.1
+    container_name: redis-n1
+    environment:
+      - EXTPORT=6379
+    networks:
+      redis_cluster:
+        ipv4_address: 10.0.0.3
+    ports:
+      - "6379:6379"
+  redis-n2:
+    build:
+      context: .
+    image: rediscluster:0.1
+    container_name: redis-n2
+    environment:
+      - EXTPORT=6380
+    networks:
+      redis_cluster:
+        ipv4_address: 10.0.0.4
+    ports:
+      - "6380:6380"
+  redis-n3:
+    build:
+      context: .
+    image: rediscluster:0.1
+    container_name: redis-n3
+    environment:
+      - EXTPORT=6381
+    networks:
+      redis_cluster:
+        ipv4_address: 10.0.0.5
+    ports:
+      - "6381:6381"
+  redis-n4:
+    build:
+      context: .
+    image: rediscluster:0.1
+    container_name: redis-n4
+    environment:
+      - EXTPORT=6382
+    networks:
+      redis_cluster:
+        ipv4_address: 10.0.0.6
+    ports:
+      - "6382:6382"
+  redis-n5:
+    build:
+      context: .
+    image: rediscluster:0.1
+    container_name: redis-n5
+    environment:
+      - EXTPORT=6383
+    networks:
+      redis_cluster:
+        ipv4_address: 10.0.0.7
+    ports:
+      - "6383:6383"
+  redis-n6:
+    build:
+      context: .
+    image: rediscluster:0.1
+    container_name: redis-n6
+    environment:
+      - EXTPORT=6384
+    networks:
+      redis_cluster:
+        ipv4_address: 10.0.0.8
+    ports:
+      - "6384:6384"
+  redis-n7:
+    build:
+      context: .
+    image: rediscluster:0.1
+    container_name: redis-n7
+    command: /bin/sh -c "/usr/local/bin/redisClusterBuild.sh"
+    networks:
+      redis_cluster:
+        ipv4_address: 10.0.0.9
+    depends_on:
+      - redis-ui
+      - redis-n1
+      - redis-n2
+      - redis-n3
+      - redis-n4
+      - redis-n5
+      - redis-n6
+
+networks:
+  redis_cluster:
+    ipam:
+      driver: default
+      config:
+        - subnet: "10.0.0.0/24"
